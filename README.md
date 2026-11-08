@@ -2,6 +2,8 @@
 
 Lembretes discretos que aparecem na hora certa — sem manual.
 
+**[Baixar a versão mais recente](https://github.com/LaCharlynn/NofyMe/releases/latest)** — instalador ou portátil, sem precisar instalar o .NET.
+
 ## O que faz
 
 - **Pop-up na tela**: cartão com barra de tempo, “Adiar 10 min” e “Dispensar”. Fecha sozinho no tempo definido em **Configurações → Tempo na tela** (1 a 60 s; padrão 6 s). O canto de entrada é escolhido em **Posição do pop-up**.
@@ -20,8 +22,10 @@ Lembretes discretos que aparecem na hora certa — sem manual.
 
 | Arquivo | Como usar |
 | --- | --- |
-| `dist\NofyMe-Setup-1.0.0.exe` | Instala por usuário (sem administrador), cria atalhos e abre o app. |
-| `dist\NofyMe-1.0.0-portatil.zip` | Extraia e execute `NofyMe.exe`. Não precisa instalar. |
+| `NofyMe-Setup-1.0.0.exe` | Instala por usuário (sem administrador), cria atalhos e abre o app. |
+| `NofyMe-1.0.0-portatil.zip` | Extraia e execute `NofyMe.exe`. Não precisa instalar. |
+
+Os dois ficam em [Releases](https://github.com/LaCharlynn/NofyMe/releases) e também em `dist` depois de gerados.
 
 Os dois são autocontidos: não exigem .NET instalado. A desinstalação **não apaga** os lembretes.
 
