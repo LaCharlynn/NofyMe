@@ -1,0 +1,32 @@
+<Window x:Class="NofyMe.BalloonWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NofyMe"
+        SizeToContent="WidthAndHeight"
+        MaxWidth="420" MaxHeight="300"
+        WindowStyle="None" AllowsTransparency="True"
+        ResizeMode="NoResize" ShowInTaskbar="False"
+        ShowActivated="False" Topmost="True"
+        Background="Transparent">
+
+    <!-- Balão compacto do design: uma única bolha sólida na cor de destaque,
+         só com a mensagem. Os cantos são arredondados e o canto de origem
+         "salta" para fora — o formato do balão, sem seta separada. -->
+    <Grid x:Name="Root" Background="Transparent"
+          Cursor="Hand" MouseLeftButtonUp="Bubble_Click">
+
+        <!-- forma desenhada no code-behind (depende do tamanho do texto) -->
+        <Canvas>
+            <Path x:Name="BubbleShape" Fill="{DynamicResource Accent}"/>
+        </Canvas>
+
+        <!-- só mede o texto; o preenchimento vem da forma acima -->
+        <Border x:Name="Bubble" Margin="14"
+                Background="Transparent" Padding="18,12">
+            <TextBlock x:Name="TxtBody"
+                       FontFamily="Segoe UI" FontSize="14"
+                       Foreground="{DynamicResource OnAccent}"
+                       TextWrapping="Wrap" MaxWidth="340"/>
+        </Border>
+    </Grid>
+</Window>

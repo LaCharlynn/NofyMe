@@ -1,0 +1,18 @@
+# Build
+bin/
+obj/
+dist/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+
+# Testes
+TestResults/
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store

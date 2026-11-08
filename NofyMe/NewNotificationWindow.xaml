@@ -1,0 +1,140 @@
+<Window x:Class="NofyMe.NewNotificationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Nova notificação"
+        Icon="pack://application:,,,/Assets/notifica.ico"
+        Width="560" Height="640"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None" AllowsTransparency="True"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Background="Transparent">
+
+    <Border CornerRadius="18"
+            Background="{DynamicResource Panel}"
+            BorderBrush="{DynamicResource Border}" BorderThickness="1">
+        <Grid Margin="32">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <TextBlock x:Name="HeaderTitle" Text="Nova notificação" Style="{StaticResource TitleBig}" FontSize="20"/>
+                <TextBlock x:Name="ErrorHint" Text="" Foreground="#E57373"
+                           FontFamily="Segoe UI" FontSize="12" Margin="0,4,0,0"
+                           Visibility="Collapsed"/>
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="1" Margin="0,10,0,0"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+
+                <TextBlock Text="Título" Style="{StaticResource Caption}" FontSize="13"/>
+                <TextBox x:Name="TxtTitle" Style="{StaticResource Input}" Margin="0,6,0,0" AutomationProperties.Name="Título"/>
+
+                <TextBlock Text="Mensagem" Style="{StaticResource Caption}" FontSize="13" Margin="0,16,0,0"/>
+                <TextBox x:Name="TxtMessage" Style="{StaticResource Input}" Margin="0,6,0,0" AutomationProperties.Name="Mensagem"/>
+
+                <TextBlock Text="Exibir como" Style="{StaticResource Caption}" FontSize="13" Margin="0,16,0,0"/>
+                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                    <RadioButton x:Name="RbPopup" GroupName="Mode" Style="{StaticResource ModeCard}" Content="Pop-up"
+                                 Width="150" HorizontalContentAlignment="Left" IsChecked="True"/>
+                    <RadioButton x:Name="RbNative" GroupName="Mode" Style="{StaticResource ModeCard}" Content="Nativa"
+                                 Width="150" HorizontalContentAlignment="Left" Margin="10,0,0,0"/>
+                    <RadioButton x:Name="RbBalloon" GroupName="Mode" Style="{StaticResource ModeCard}" Content="Balão"
+                                 Width="150" HorizontalContentAlignment="Left" Margin="10,0,0,0"/>
+                </StackPanel>
+
+                <TextBlock Text="Disparar quando" Style="{StaticResource Caption}" FontSize="13" Margin="0,16,0,0"/>
+
+                <Border Style="{StaticResource Card}" Margin="0,4,0,4" Padding="14,10">
+                    <CheckBox x:Name="ChkOnStartup" Style="{StaticResource Check}"
+                              Content="Ao iniciar o Windows"/>
+                </Border>
+
+                <Border Style="{StaticResource Card}" Margin="0,4,0,4" Padding="14,10">
+                    <Grid>
+                        <CheckBox x:Name="ChkAfterTime" Style="{StaticResource Check}"
+                                  Content="Após determinado tempo" VerticalAlignment="Center"
+                                  Checked="ChkAfterTime_Changed" Unchecked="ChkAfterTime_Changed"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                                    VerticalAlignment="Center">
+                            <Border Background="{DynamicResource InputBg}" CornerRadius="8"
+                                    BorderBrush="{DynamicResource Border}" BorderThickness="1"
+                                    Width="72">
+                                <TextBox x:Name="TxtInterval" Background="Transparent" BorderThickness="0"
+                                         Foreground="{DynamicResource Text}" CaretBrush="{DynamicResource Accent}"
+                                         FontFamily="Segoe UI" FontSize="14" Padding="10,6"
+                                         Text="45" TextAlignment="Center" VerticalAlignment="Center"
+                                         MaxLength="5" AutomationProperties.Name="Intervalo" GotKeyboardFocus="TimePart_GotFocus"
+                                         PreviewTextInput="TimePart_PreviewTextInput"
+                                         PreviewKeyDown="TimePart_PreviewKeyDown"/>
+                            </Border>
+                            <RadioButton x:Name="RbMin" GroupName="IntervalUnit" Content="min"
+                                         Style="{StaticResource DayChip}" Width="40" Height="32"
+                                         Margin="8,0,0,0" IsChecked="True"/>
+                            <RadioButton x:Name="RbSeg" GroupName="IntervalUnit" Content="seg"
+                                         Style="{StaticResource DayChip}" Width="40" Height="32"
+                                         Margin="4,0,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource Card}" Margin="0,4,0,4" Padding="14,10">
+                    <StackPanel>
+                        <Grid>
+                            <CheckBox x:Name="ChkAtTime" Style="{StaticResource Check}"
+                                      Content="Em determinado horário" VerticalAlignment="Center"
+                                      Checked="ChkAtTime_Changed" Unchecked="ChkAtTime_Changed"/>
+                            <Border Background="{DynamicResource InputBg}" CornerRadius="8"
+                                    BorderBrush="{DynamicResource Border}" BorderThickness="1"
+                                    Width="110" HorizontalAlignment="Right">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <TextBox x:Name="TxtTimeHour" Background="Transparent" BorderThickness="0"
+                                             Foreground="{DynamicResource Text}" CaretBrush="{DynamicResource Accent}"
+                                             FontFamily="Segoe UI" FontSize="14" Padding="0,6" Width="26"
+                                             Text="09" TextAlignment="Center" MaxLength="2" AutomationProperties.Name="Hora" GotKeyboardFocus="TimePart_GotFocus"
+                                             PreviewTextInput="TimePart_PreviewTextInput"
+                                             PreviewKeyDown="TimePart_PreviewKeyDown"
+                                             TextChanged="TimeHour_TextChanged"
+                                             LostFocus="TimePart_LostFocus"/>
+                                    <TextBlock Text=":" Foreground="{DynamicResource Sub}"
+                                               FontFamily="Segoe UI" FontSize="14" VerticalAlignment="Center"/>
+                                    <TextBox x:Name="TxtTimeMinute" Background="Transparent" BorderThickness="0"
+                                             Foreground="{DynamicResource Text}" CaretBrush="{DynamicResource Accent}"
+                                             FontFamily="Segoe UI" FontSize="14" Padding="0,6" Width="26"
+                                             Text="00" TextAlignment="Center" MaxLength="2" AutomationProperties.Name="Minutos" GotKeyboardFocus="TimePart_GotFocus"
+                                             PreviewTextInput="TimePart_PreviewTextInput"
+                                             PreviewKeyDown="TimePart_PreviewKeyDown"
+                                             LostFocus="TimePart_LostFocus"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Dias da semana (chips) -->
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <ToggleButton x:Name="DaySun" Style="{StaticResource DayChip}" IsChecked="True" Content="D"/>
+                            <ToggleButton x:Name="DayMon" Style="{StaticResource DayChip}" IsChecked="True" Content="S" Margin="6,0,0,0"/>
+                            <ToggleButton x:Name="DayTue" Style="{StaticResource DayChip}" IsChecked="True" Content="T" Margin="6,0,0,0"/>
+                            <ToggleButton x:Name="DayWed" Style="{StaticResource DayChip}" IsChecked="True" Content="Q" Margin="6,0,0,0"/>
+                            <ToggleButton x:Name="DayThu" Style="{StaticResource DayChip}" IsChecked="True" Content="Q" Margin="6,0,0,0"/>
+                            <ToggleButton x:Name="DayFri" Style="{StaticResource DayChip}" IsChecked="True" Content="S" Margin="6,0,0,0"/>
+                            <ToggleButton x:Name="DaySat" Style="{StaticResource DayChip}" IsChecked="True" Content="S" Margin="6,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Botões -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+                    <Button Content="Cancelar" Style="{StaticResource PillOutline}" Padding="18,0"
+                            IsCancel="True" Click="Cancel_Click"/>
+                    <Button Content="Salvar" Style="{StaticResource PillPrimary}" Padding="20,0"
+                            Margin="10,0,0,0" Click="Save_Click"/>
+                </StackPanel>
+            </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>

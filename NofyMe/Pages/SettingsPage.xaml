@@ -1,0 +1,400 @@
+<UserControl x:Class="NofyMe.Pages.SettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UserControl.Resources>
+        <!-- Cartão de tema: anel de 2 px separado por 2 px, como no design -->
+        <Style x:Key="ThemeCard" TargetType="RadioButton">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Ring" CornerRadius="22" BorderThickness="2" Padding="2"
+                                BorderBrush="Transparent" Background="{DynamicResource Bg}">
+                            <Border CornerRadius="20" Background="{TemplateBinding Background}" Padding="14">
+                                <ContentPresenter/>
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Ring" Property="BorderBrush"
+                                        Value="{DynamicResource Accent}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Ring" Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PreviewTitle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="PreviewSub" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="0,1,0,0"/>
+        </Style>
+
+        <Style x:Key="BubbleText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel MaxWidth="760" HorizontalAlignment="Left">
+
+            <TextBlock Text="Opções" Foreground="{DynamicResource Text}"
+                       FontFamily="Segoe UI" FontSize="20" FontWeight="SemiBold"
+                       Margin="0,0,0,8"/>
+
+            <Border Style="{StaticResource Card}" Margin="0,4,0,6">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="Iniciar com o Windows"
+                                   Foreground="{DynamicResource Text}" FontFamily="Segoe UI"
+                                   FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Text="O NofyMe abre junto com o Windows."
+                                   Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
+                                   FontSize="12" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <ToggleButton x:Name="SwStartWithWindows" Style="{StaticResource Switch}"
+                                  HorizontalAlignment="Right" VerticalAlignment="Center"
+                                  Checked="StartWithWindows_On" Unchecked="StartWithWindows_Off"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,4,0,6">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="Notificar ao ligar"
+                                   Foreground="{DynamicResource Text}" FontFamily="Segoe UI"
+                                   FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Text="Permite que gatilhos “Ao iniciar o Windows” disparem."
+                                   Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
+                                   FontSize="12" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <ToggleButton x:Name="SwNotifyAtStartup" Style="{StaticResource Switch}"
+                                  HorizontalAlignment="Right" VerticalAlignment="Center"
+                                  Checked="NotifyAtStartup_On" Unchecked="NotifyAtStartup_Off"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,4,0,8">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="Posição do pop-up"
+                                   Foreground="{DynamicResource Text}" FontFamily="Segoe UI"
+                                   FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Text="Canto de onde o pop-up entra na tela."
+                                   Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
+                                   FontSize="12" Margin="0,2,0,0"/>
+                    </StackPanel>
+
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <RadioButton x:Name="PopSupEsq" Grid.Row="0" Grid.Column="0"
+                                     Style="{StaticResource DayChip}" GroupName="CantoPopup"
+                                     Content="↖" Width="40" Height="32" Margin="0,0,4,4"
+                                     Tag="Superior esquerdo"
+                                     ToolTip="Superior esquerdo"
+                                     AutomationProperties.Name="Pop-up no canto superior esquerdo"
+                                     Checked="PopupCorner_Checked"/>
+                        <RadioButton x:Name="PopSupDir" Grid.Row="0" Grid.Column="1"
+                                     Style="{StaticResource DayChip}" GroupName="CantoPopup"
+                                     Content="↗" Width="40" Height="32" Margin="0,0,0,4"
+                                     Tag="Superior direito"
+                                     ToolTip="Superior direito"
+                                     AutomationProperties.Name="Pop-up no canto superior direito"
+                                     Checked="PopupCorner_Checked"/>
+                        <RadioButton x:Name="PopInfEsq" Grid.Row="1" Grid.Column="0"
+                                     Style="{StaticResource DayChip}" GroupName="CantoPopup"
+                                     Content="↙" Width="40" Height="32" Margin="0,0,4,0"
+                                     Tag="Inferior esquerdo"
+                                     ToolTip="Inferior esquerdo"
+                                     AutomationProperties.Name="Pop-up no canto inferior esquerdo"
+                                     Checked="PopupCorner_Checked"/>
+                        <RadioButton x:Name="PopInfDir" Grid.Row="1" Grid.Column="1"
+                                     Style="{StaticResource DayChip}" GroupName="CantoPopup"
+                                     Content="↘" Width="40" Height="32" Margin="0"
+                                     Tag="Inferior direito"
+                                     ToolTip="Inferior direito"
+                                     AutomationProperties.Name="Pop-up no canto inferior direito"
+                                     Checked="PopupCorner_Checked"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,4,0,8">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="Tempo na tela"
+                                   Foreground="{DynamicResource Text}" FontFamily="Segoe UI"
+                                   FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Text="Quanto tempo o pop-up fica visível."
+                                   Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
+                                   FontSize="12" Margin="0,2,0,0"/>
+                        <TextBlock x:Name="TempoErro" Text="" Visibility="Collapsed"
+                                   Foreground="#E57373" FontFamily="Segoe UI"
+                                   FontSize="12" Margin="0,6,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                                VerticalAlignment="Center">
+                        <TextBox x:Name="TempoPopup" Style="{StaticResource Input}"
+                                 Width="64" MaxLength="2" TextAlignment="Center" Text="6"
+                                 AutomationProperties.Name="Segundos que o pop-up fica na tela"
+                                 PreviewTextInput="TempoPopup_PreviewTextInput"
+                                 TextChanged="TempoPopup_TextChanged"
+                                 GotKeyboardFocus="TempoPopup_GotKeyboardFocus"
+                                 LostKeyboardFocus="TempoPopup_LostKeyboardFocus"
+                                 KeyDown="TempoPopup_KeyDown"/>
+                        <TextBlock Text="s" Foreground="{DynamicResource Faint}"
+                                   FontFamily="Segoe UI" FontSize="14"
+                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Margin="0,4,0,8">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="Posição do balão"
+                                   Foreground="{DynamicResource Text}" FontFamily="Segoe UI"
+                                   FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Text="Canto da tela em que o balão compacto aparece."
+                                   Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
+                                   FontSize="12" Margin="0,2,0,0"/>
+                    </StackPanel>
+
+                    <!-- miniatura da tela: cada botão é um canto -->
+                    <Grid HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <RadioButton x:Name="PosSupEsq" Grid.Row="0" Grid.Column="0"
+                                     Style="{StaticResource DayChip}" GroupName="CantoBalao"
+                                     Content="↖" Width="40" Height="32" Margin="0,0,4,4"
+                                     Tag="Superior esquerdo"
+                                     ToolTip="Superior esquerdo"
+                                     AutomationProperties.Name="Balão no canto superior esquerdo"
+                                     Checked="BalloonCorner_Checked"/>
+                        <RadioButton x:Name="PosSupDir" Grid.Row="0" Grid.Column="1"
+                                     Style="{StaticResource DayChip}" GroupName="CantoBalao"
+                                     Content="↗" Width="40" Height="32" Margin="0,0,0,4"
+                                     Tag="Superior direito"
+                                     ToolTip="Superior direito"
+                                     AutomationProperties.Name="Balão no canto superior direito"
+                                     Checked="BalloonCorner_Checked"/>
+                        <RadioButton x:Name="PosInfEsq" Grid.Row="1" Grid.Column="0"
+                                     Style="{StaticResource DayChip}" GroupName="CantoBalao"
+                                     Content="↙" Width="40" Height="32" Margin="0,0,4,0"
+                                     Tag="Inferior esquerdo"
+                                     ToolTip="Inferior esquerdo"
+                                     AutomationProperties.Name="Balão no canto inferior esquerdo"
+                                     Checked="BalloonCorner_Checked"/>
+                        <RadioButton x:Name="PosInfDir" Grid.Row="1" Grid.Column="1"
+                                     Style="{StaticResource DayChip}" GroupName="CantoBalao"
+                                     Content="↘" Width="40" Height="32" Margin="0"
+                                     Tag="Inferior direito"
+                                     ToolTip="Inferior direito"
+                                     AutomationProperties.Name="Balão no canto inferior direito"
+                                     Checked="BalloonCorner_Checked"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <TextBlock Text="Temas" Foreground="{DynamicResource Text}"
+                       FontFamily="Segoe UI" FontSize="20" FontWeight="SemiBold"
+                       Margin="0,26,0,0"/>
+            <TextBlock Text="Cores aconchegantes para o dia e para a noite"
+                       Foreground="{DynamicResource Faint}" FontFamily="Segoe UI" FontSize="13"
+                       Margin="0,4,0,14"/>
+
+            <!-- 4 cartões, cada um com as cores do próprio tema -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Entardecer -->
+                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,10">
+                    <RadioButton x:Name="ThemeEntardecer" Style="{StaticResource ThemeCard}" GroupName="Tema"
+                            Background="#1B1A20" Tag="Entardecer" Click="Theme_Click"
+                            ToolTip="Aplicar o tema Entardecer" AutomationProperties.Name="Tema Entardecer">
+                        <StackPanel>
+                            <Border CornerRadius="14" Background="#25232C" Padding="12">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="36" Height="36" CornerRadius="12" Background="#2B7C5CF0">
+                                        <Path Data="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9 M10.3 21a1.9 1.9 0 0 0 3.4 0"
+                                              Width="20" Height="20" Stretch="Uniform"
+                                              Stroke="#B7A5FF" StrokeThickness="2" Fill="Transparent"
+                                              StrokeLineJoin="Round" StrokeStartLineCap="Round"
+                                              StrokeEndLineCap="Round"/>
+                                    </Border>
+                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Beber água" Style="{StaticResource PreviewTitle}"
+                                                   Foreground="#F3EFF8"/>
+                                        <TextBlock Text="Pop-up · agora" Style="{StaticResource PreviewSub}"
+                                                   Foreground="#A39CB4"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            <Border CornerRadius="16" Background="#7C5CF0"
+                                    HorizontalAlignment="Left" Margin="0,12,0,0" Padding="14,8">
+                                <TextBlock Text="Hora de uma pausa" Style="{StaticResource BubbleText}"
+                                           Foreground="#FFFFFF"/>
+                            </Border>
+                        </StackPanel>
+                    </RadioButton>
+                    <TextBlock Text="Entardecer" Foreground="{DynamicResource Text}"
+                               FontFamily="Segoe UI" FontSize="14" FontWeight="SemiBold"
+                               Margin="2,10,0,0"/>
+                    <TextBlock x:Name="StatusEntardecer" Text="Aplicar"
+                               Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
+                               FontSize="12" Margin="2,1,0,0"/>
+                </StackPanel>
+
+                <!-- Café -->
+                <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,0,10">
+                    <RadioButton x:Name="ThemeCafé" Style="{StaticResource ThemeCard}" GroupName="Tema"
+                            Background="#211A16" Tag="Café" Click="Theme_Click"
+                            ToolTip="Aplicar o tema Café" AutomationProperties.Name="Tema Café">
+                        <StackPanel>
+                            <Border CornerRadius="14" Background="#2E241E" Padding="12">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="36" Height="36" CornerRadius="12" Background="#2BD98E5B">
+                                        <Path Data="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9 M10.3 21a1.9 1.9 0 0 0 3.4 0"
+                                              Width="20" Height="20" Stretch="Uniform"
+                                              Stroke="#D98E5B" StrokeThickness="2" Fill="Transparent"
+                                              StrokeLineJoin="Round" StrokeStartLineCap="Round"
+                                              StrokeEndLineCap="Round"/>
+                                    </Border>
+                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Beber água" Style="{StaticResource PreviewTitle}"
+                                                   Foreground="#F6EBDD"/>
+                                        <TextBlock Text="Pop-up · agora" Style="{StaticResource PreviewSub}"
+                                                   Foreground="#B9A594"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            <Border CornerRadius="16" Background="#D98E5B"
+                                    HorizontalAlignment="Left" Margin="0,12,0,0" Padding="14,8">
+                                <TextBlock Text="Hora de uma pausa" Style="{StaticResource BubbleText}"
+                                           Foreground="#2B1A10"/>
+                            </Border>
+                        </StackPanel>
+                    </RadioButton>
+                    <TextBlock Text="Café" Foreground="{DynamicResource Text}"
+                               FontFamily="Segoe UI" FontSize="14" FontWeight="SemiBold"
+                               Margin="2,10,0,0"/>
+                    <TextBlock x:Name="StatusCafé" Text="Aplicar"
+                               Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
+                               FontSize="12" Margin="2,1,0,0"/>
+                </StackPanel>
+
+                <!-- Floresta -->
+                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,10,10,0">
+                    <RadioButton x:Name="ThemeFloresta" Style="{StaticResource ThemeCard}" GroupName="Tema"
+                            Background="#171D19" Tag="Floresta" Click="Theme_Click"
+                            ToolTip="Aplicar o tema Floresta" AutomationProperties.Name="Tema Floresta">
+                        <StackPanel>
+                            <Border CornerRadius="14" Background="#212A24" Padding="12">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="36" Height="36" CornerRadius="12" Background="#2B8DB596">
+                                        <Path Data="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9 M10.3 21a1.9 1.9 0 0 0 3.4 0"
+                                              Width="20" Height="20" Stretch="Uniform"
+                                              Stroke="#8DB596" StrokeThickness="2" Fill="Transparent"
+                                              StrokeLineJoin="Round" StrokeStartLineCap="Round"
+                                              StrokeEndLineCap="Round"/>
+                                    </Border>
+                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Beber água" Style="{StaticResource PreviewTitle}"
+                                                   Foreground="#E8F0E6"/>
+                                        <TextBlock Text="Pop-up · agora" Style="{StaticResource PreviewSub}"
+                                                   Foreground="#9BAE9F"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            <Border CornerRadius="16" Background="#8DB596"
+                                    HorizontalAlignment="Left" Margin="0,12,0,0" Padding="14,8">
+                                <TextBlock Text="Hora de uma pausa" Style="{StaticResource BubbleText}"
+                                           Foreground="#12201A"/>
+                            </Border>
+                        </StackPanel>
+                    </RadioButton>
+                    <TextBlock Text="Floresta" Foreground="{DynamicResource Text}"
+                               FontFamily="Segoe UI" FontSize="14" FontWeight="SemiBold"
+                               Margin="2,10,0,0"/>
+                    <TextBlock x:Name="StatusFloresta" Text="Aplicar"
+                               Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
+                               FontSize="12" Margin="2,1,0,0"/>
+                </StackPanel>
+
+                <!-- Pêssego (claro) -->
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,10,0,0">
+                    <RadioButton x:Name="ThemePêssego" Style="{StaticResource ThemeCard}" GroupName="Tema"
+                            Background="#FBF1E7" Tag="Pêssego" Click="Theme_Click"
+                            ToolTip="Aplicar o tema Pêssego" AutomationProperties.Name="Tema Pêssego">
+                        <StackPanel>
+                            <Border CornerRadius="14" Background="#FFF9F3" Padding="12">
+                                <StackPanel Orientation="Horizontal">
+                                    <Border Width="36" Height="36" CornerRadius="12" Background="#2BC85A41">
+                                        <Path Data="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9 M10.3 21a1.9 1.9 0 0 0 3.4 0"
+                                              Width="20" Height="20" Stretch="Uniform"
+                                              Stroke="#C85A41" StrokeThickness="2" Fill="Transparent"
+                                              StrokeLineJoin="Round" StrokeStartLineCap="Round"
+                                              StrokeEndLineCap="Round"/>
+                                    </Border>
+                                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                                        <TextBlock Text="Beber água" Style="{StaticResource PreviewTitle}"
+                                                   Foreground="#3A2B25"/>
+                                        <TextBlock Text="Pop-up · agora" Style="{StaticResource PreviewSub}"
+                                                   Foreground="#7A655B"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            <Border CornerRadius="16" Background="#C85A41"
+                                    HorizontalAlignment="Left" Margin="0,12,0,0" Padding="14,8">
+                                <TextBlock Text="Hora de uma pausa" Style="{StaticResource BubbleText}"
+                                           Foreground="#FFFFFF"/>
+                            </Border>
+                        </StackPanel>
+                    </RadioButton>
+                    <TextBlock Text="Pêssego" Foreground="{DynamicResource Text}"
+                               FontFamily="Segoe UI" FontSize="14" FontWeight="SemiBold"
+                               Margin="2,10,0,0"/>
+                    <TextBlock x:Name="StatusPêssego" Text="Aplicar"
+                               Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
+                               FontSize="12" Margin="2,1,0,0"/>
+                </StackPanel>
+            </Grid>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,172 @@
+﻿<Window x:Class="NofyMe.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NofyMe"
+        Icon="pack://application:,,,/Assets/notifica.ico"
+        Width="960" Height="600"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None" AllowsTransparency="True"
+        ResizeMode="CanMinimize"
+        Background="Transparent">
+
+    <Border CornerRadius="18"
+            Background="{DynamicResource Panel}"
+            BorderBrush="{DynamicResource Border}" BorderThickness="1"
+            SnapsToDevicePixels="True">
+        <Grid x:Name="RootGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="230"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ===================== SIDEBAR ===================== -->
+            <Grid Grid.Column="0" Background="{DynamicResource Panel}"
+                  MouseLeftButtonDown="Sidebar_MouseLeftButtonDown">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Marca -->
+                <StackPanel Orientation="Horizontal" Margin="24,24,16,20">
+                    <Path Data="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9 M10.3 21a1.9 1.9 0 0 0 3.4 0"
+                          Width="20" Height="20" Stretch="Uniform"
+                          Stroke="{DynamicResource Accent}" StrokeThickness="2" Fill="Transparent"
+                          StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    <TextBlock Text="NofyMe" FontFamily="Segoe UI" FontSize="17" FontWeight="SemiBold"
+                               Foreground="{DynamicResource Text}" Margin="10,0,0,0"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Navegação -->
+                <StackPanel Grid.Row="1" Margin="16,0">
+                    <RadioButton x:Name="NavNofificacoes" Style="{StaticResource NavBtn}"
+                                 Content="Notificações" IsChecked="True"
+                                 Checked="Nav_Checked" Tag="notificacoes"/>
+                    <RadioButton x:Name="NavHistorico" Style="{StaticResource NavBtn}"
+                                 Content="Histórico"
+                                 Checked="Nav_Checked" Tag="historico"/>
+                    <RadioButton x:Name="NavConfiguracoes" Style="{StaticResource NavBtn}"
+                                 Content="Configurações"
+                                 Checked="Nav_Checked" Tag="config"/>
+                </StackPanel>
+
+                <!-- Rodapé: temas + globais -->
+                <StackPanel Grid.Row="2" Margin="16,0,16,18">
+                    <Separator Background="{DynamicResource Border}" Height="1" Margin="0,14,0,14"/>
+                    <Grid Margin="8,0,0,12">
+                        <TextBlock Text="Tema" FontFamily="Segoe UI" FontSize="13"
+                                   Foreground="{DynamicResource Sub}" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <RadioButton x:Name="DotEntardecer" Style="{StaticResource ThemeDot}"
+                                         GroupName="TemaRapido" Background="#7C5CF0"
+                                         Checked="ThemeDot_Checked" Tag="Entardecer"
+                                         ToolTip="Tema Entardecer"/>
+                            <RadioButton x:Name="DotCafe" Style="{StaticResource ThemeDot}" Margin="2,0,0,0"
+                                         GroupName="TemaRapido" Background="#D98E5B"
+                                         Checked="ThemeDot_Checked" Tag="Café"
+                                         ToolTip="Tema Café"/>
+                            <RadioButton x:Name="DotFloresta" Style="{StaticResource ThemeDot}" Margin="2,0,0,0"
+                                         GroupName="TemaRapido" Background="#8DB596"
+                                         Checked="ThemeDot_Checked" Tag="Floresta"
+                                         ToolTip="Tema Floresta"/>
+                            <RadioButton x:Name="DotPessego" Style="{StaticResource ThemeDot}" Margin="2,0,0,0"
+                                         GroupName="TemaRapido" Background="#C85A41"
+                                         Checked="ThemeDot_Checked" Tag="Pêssego"
+                                         ToolTip="Tema Pêssego"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="2,0,0,10">
+                        <TextBlock Text="Iniciar com o Windows" FontFamily="Segoe UI" FontSize="13"
+                                   Foreground="{DynamicResource Sub}" VerticalAlignment="Center"/>
+                        <ToggleButton x:Name="SwStartWithWindows" Style="{StaticResource Switch}"
+                                      HorizontalAlignment="Right"
+                                      Checked="StartWithWindows_Checked" Unchecked="StartWithWindows_Unchecked"/>
+                    </Grid>
+
+                    <Grid Margin="2,0,0,2">
+                        <TextBlock Text="Notificar ao ligar" FontFamily="Segoe UI" FontSize="13"
+                                   Foreground="{DynamicResource Sub}" VerticalAlignment="Center"/>
+                        <ToggleButton x:Name="SwNotifyAtStartup" Style="{StaticResource Switch}"
+                                      HorizontalAlignment="Right"
+                                      Checked="NotifyAtStartup_Changed" Unchecked="NotifyAtStartup_Changed"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+
+            <!-- ===================== CONTEÚDO ===================== -->
+            <Border Grid.Column="1" Background="{DynamicResource Bg}"
+                    CornerRadius="0,18,18,0"
+                    BorderBrush="{DynamicResource Border}" BorderThickness="1,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Barra de janela (arrastar + minimizar/fechar) -->
+                    <Grid Grid.Row="0" Background="Transparent"
+                          MouseLeftButtonDown="WindowBar_MouseLeftButtonDown">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                                    VerticalAlignment="Top" Margin="0,2,8,0">
+                            <Button x:Name="BtnMinimize" Style="{StaticResource WindowBtn}"
+                                    Click="BtnMinimize_Click" ToolTip="Minimizar"
+                                    AutomationProperties.Name="Minimizar">
+                                <Path Data="M2 8h12" Width="16" Height="16" Stretch="None"
+                                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                      StrokeThickness="2" StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"/>
+                            </Button>
+                            <Button x:Name="BtnClose" Style="{StaticResource WindowBtn}" Margin="2,0,0,0"
+                                    Click="BtnClose_Click" ToolTip="Fechar para a bandeja"
+                                    AutomationProperties.Name="Fechar para a bandeja">
+                                <Path Data="M3 3l10 10M13 3L3 13" Width="16" Height="16" Stretch="None"
+                                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                                      StrokeThickness="2" StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"/>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Cabeçalho da página -->
+                    <Grid Grid.Row="1" Margin="40,0,40,10" Background="Transparent"
+                          MouseLeftButtonDown="Sidebar_MouseLeftButtonDown">
+                        <StackPanel>
+                            <TextBlock x:Name="PageTitle" Text="Notificações" Style="{StaticResource TitleBig}"/>
+                            <TextBlock x:Name="PageSub" Text="0 ativas" Style="{StaticResource Caption}"
+                                       FontSize="13" Margin="2,2,0,0"/>
+                        </StackPanel>
+                        <Button x:Name="BtnNewNotification" Content="+ Nova notificação"
+                                Style="{StaticResource PillAccent}" Padding="18,10"
+                                HorizontalAlignment="Right" VerticalAlignment="Top"
+                                Click="BtnNewNotification_Click"/>
+                    </Grid>
+
+                    <!-- Página (conteúdo trocável) -->
+                    <ContentControl Grid.Row="2" x:Name="PageHost" Margin="40,8,40,24"/>
+
+                    <!-- Desfazer (aparece só depois de excluir) -->
+                    <Border x:Name="UndoBar" Grid.Row="0" Grid.RowSpan="3"
+                            VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                            Margin="0,0,0,24" Padding="16,8"
+                            Background="{DynamicResource Panel}"
+                            BorderBrush="{DynamicResource Border}" BorderThickness="1"
+                            CornerRadius="12" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock x:Name="UndoText" Text="Notificação excluída."
+                                       Foreground="{DynamicResource Text}"
+                                       FontFamily="Segoe UI" FontSize="13"
+                                       VerticalAlignment="Center"/>
+                            <Button Content="Desfazer" Style="{StaticResource PillGhost}"
+                                    Height="30" Padding="12,0" Margin="14,0,0,0"
+                                    Click="Undo_Click"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
