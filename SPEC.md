@@ -1,6 +1,6 @@
 # SPEC.md — NofyMe
 
-**Versão:** 1.1.2 · **Atualizado em:** 10/11/2026
+**Versão:** 1.1.3 · **Atualizado em:** 10/11/2026
 
 App desktop Windows para notificações personalizadas (pop-up na tela, notificações
 nativas do Windows e balão compacto), com gatilhos de tempo/horário e opção de
@@ -32,6 +32,9 @@ autocontida (x64, sem exigir .NET instalado).
   e botão **+ Nova notificação** (só em Notificações).
 - Fechar a janela **esconde** o app para a bandeja; ele continua disparando.
   Sair de verdade é pelo menu do ícone: **Abrir NofyMe / Sair**.
+- **Ao iniciar com o Windows**, o app abre **oculto** (só a bandeja) e dispara
+  os lembretes "Ao iniciar o Windows" normalmente. O argumento `--startup` é
+  gravado na entrada do Registro; cliques normais no `.exe` mostram a janela.
 - Instância única: abrir o `.exe` de novo traz a janela existente para a frente.
 
 ### 1.2 Criar / editar notificação (modal 560×780, sem rolagem)
@@ -115,7 +118,9 @@ Na lista:
 ### 1.5 Configurações
 
 - **Iniciar com o Windows** — grava/remove a linha "NofyMe" em
-  `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` (por usuário, sem admin).
+  `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` (por usuário, sem admin),
+  com o argumento `--startup` para abrir em segundo plano. Entradas antigas sem
+  o argumento são migradas na instalação/ao abrir o app.
 - **Notificar ao ligar** — permite que gatilhos "Ao iniciar o Windows" disparem.
 - **Tempo na tela** — padrão do pop-up, 1–60 s (padrão **6 s**); cada lembrete
   pode sobrescrever.
@@ -195,14 +200,24 @@ Evidência: `dotnet test` → "Com falha: 0, Aprovado: 36, Total: 36".
   manualmente. Moldura branca eliminada (`window == client`, inset 0).
 - Temas: pop-up e balão renderizados nos 4 temas; cores resolvidas batem com a
   paleta (`popup_painel`, `balao_preenchimento`, `balao_texto`).
-- Pacotes 1.1.2 gerados:
-  - `dist\NofyMe-Setup-1.1.2.exe` — 53.060.931 bytes;
-  - `dist\NofyMe-1.1.2-portatil.zip` — 72.195.432 bytes.
-- Instalação silenciosa testada: 1.1.1 → 1.1.2, código de saída 0, app **não**
+- Pacotes 1.1.3 gerados:
+  - `dist\NofyMe-Setup-1.1.3.exe` — 53.089.745 bytes;
+  - `dist\NofyMe-1.1.3-portatil.zip` — 72.196.887 bytes.
+- Instalação silenciosa testada: 1.1.2 → 1.1.3, código de saída 0, app **não**
   abriu. Nenhum dado foi apagado pelo instalador: `notifications.json` seguiu
   vazio e o histórico foi preservado.
-- Publicação: tag `v1.1.2`, branch `main` sincronizada.
-  Release: https://github.com/LaCharlynn/NofyMe/releases/tag/v1.1.2
+- **Início com o Windows em segundo plano**: o portátil 1.1.3 executado com
+  `--startup` ficou 10 s + 30 s sem janela (`MainWindowHandle = 0`) e disparou
+  normalmente; cliques normais no `.exe` continuam mostrando a janela.
+- **Desempenho em segundo plano** (portátil Release, oculto, ocioso):
+  - CPU: **0,016 s em 30 s** → **0,003 % de 16 núcleos**;
+  - memória: **138,2 MB** de working set / **83,4 MB** privada, com variação de
+    **0,1 MB** no período (sem crescimento contínuo);
+  - 16 threads e 656 handles estáveis.
+  Conclusão: não está pesado; o consumo é compatível com um app WPF em bandeja,
+  sem uso relevante de CPU enquanto ocioso.
+- Publicação: tag `v1.1.3`, branch `main` sincronizada.
+  Release: https://github.com/LaCharlynn/NofyMe/releases/tag/v1.1.3
   (instalador e portátil anexados e verificados).
 
 ---

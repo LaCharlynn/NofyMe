@@ -56,10 +56,13 @@ public static class TrayService
 
     private static void ShowMainWindow()
     {
-        var win = System.Windows.Application.Current.Windows
-            .OfType<MainWindow>()
-            .FirstOrDefault();
-        if (win == null) return;
+        var app = System.Windows.Application.Current;
+        var win = app.Windows.OfType<MainWindow>().FirstOrDefault();
+        if (win == null)
+        {
+            win = new MainWindow();
+            app.MainWindow = win;
+        }
 
         win.Show();
         win.WindowState = System.Windows.WindowState.Normal;
@@ -142,6 +145,7 @@ public static class TrayService
 public static class AutoStartService
 {
     private const string KeyName = "NofyMe";
+    private const string StartupArgument = "--startup";
 
     public static bool IsEnabled()
     {
@@ -159,7 +163,7 @@ public static class AutoStartService
             {
                 var exe = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
                 if (string.IsNullOrEmpty(exe)) return;
-                key.SetValue(KeyName, $"\"{exe}\"");
+                key.SetValue(KeyName, $"\"{exe}\" {StartupArgument}");
             }
             else
             {
@@ -169,6 +173,29 @@ public static class AutoStartService
         catch
         {
             // registro bloqueado por política não derruba o app
+        }
+    }
+
+    /// <summary>
+    /// Entradas criadas antes da 1.1.3 apontavam só para o .exe; acrescenta o
+    /// argumento para que o próximo início do Windows abra o app oculto.
+    /// Não cria a entrada se ela não existir (respeita quem desativou).
+    /// </summary>
+    public static void AddStartupArgumentIfMissing()
+    {
+        using var key = OpenRunKey(writable: true);
+        if (key?.GetValue(KeyName) is not string value) return;
+        if (value.Contains(StartupArgument, StringComparison.OrdinalIgnoreCase)) return;
+
+        try
+        {
+            var exe = System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName;
+            if (string.IsNullOrEmpty(exe)) return;
+            key.SetValue(KeyName, $"\"{exe}\" {StartupArgument}");
+        }
+        catch
+        {
+            // sem permissão: o app continua funcionando, só abre visível no próximo boot
         }
     }
 

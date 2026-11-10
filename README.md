@@ -12,6 +12,7 @@ Lembretes discretos que aparecem na hora certa — sem manual.
 - **Por lembrete**: cada notificação define o próprio tempo na tela e o canto (sem escolha, usa inferior esquerdo).
 - **Quando disparar**: ao iniciar o Windows, a cada X minutos/segundos **ou** em um horário fixo (um ou outro). O chip mostra a unidade escolhida — 90 s não vira “1 min”.
 - **Temas**: Entardecer, Café, Floresta e Pêssego.
+- **Iniciar com o Windows**: abre **em segundo plano**, só com o ícone na bandeja; os lembretes "Ao iniciar o Windows" disparam normalmente.
 - **Janela redimensionável**: arraste as bordas ou os cantos.
 - **Bandeja**: fechar a janela mantém o NofyMe ativo. Clique duplo no ícone para abrir.
 
@@ -24,8 +25,8 @@ Lembretes discretos que aparecem na hora certa — sem manual.
 
 | Arquivo | Como usar |
 | --- | --- |
-| `NofyMe-Setup-1.1.2.exe` | Instala por usuário (sem administrador), cria atalhos e abre o app. |
-| `NofyMe-1.1.2-portatil.zip` | Extraia e execute `NofyMe.exe`. Não precisa instalar. |
+| `NofyMe-Setup-1.1.3.exe` | Instala por usuário (sem administrador), cria atalhos e abre o app. |
+| `NofyMe-1.1.3-portatil.zip` | Extraia e execute `NofyMe.exe`. Não precisa instalar. |
 
 Os dois ficam em [Releases](https://github.com/LaCharlynn/NofyMe/releases) e também em `dist` depois de gerados.
 

@@ -33,12 +33,17 @@ public partial class App : System.Windows.Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        // iniciado pelo Windows (Run) em vez de um clique do usuário
+        var startHidden = e.Args.Any(a =>
+            string.Equals(a, "--startup", StringComparison.OrdinalIgnoreCase));
+
         // instância única: a segunda apenas traz a primeira para a frente
         _instanceMutex = new Mutex(initiallyOwned: true, MutexName, out var isFirst);
         _ownsMutex = isFirst;
         if (!isFirst)
         {
-            PostMessage(HwndBroadcast, (uint)ShowWindowMessage, IntPtr.Zero, IntPtr.Zero);
+            if (!startHidden)
+                PostMessage(HwndBroadcast, (uint)ShowWindowMessage, IntPtr.Zero, IntPtr.Zero);
             Shutdown();
             return;
         }
@@ -57,6 +62,7 @@ public partial class App : System.Windows.Application
         };
 
         AppState.Load();
+        AutoStartService.AddStartupArgumentIfMissing();
         ThemeManager.Apply(AppState.Settings.ThemeName);
 
         TrayService.Initialize();
@@ -64,7 +70,16 @@ public partial class App : System.Windows.Application
         base.OnStartup(e);
 
         MainWindow = new MainWindow();
-        MainWindow.Show();
+        if (startHidden)
+        {
+            // cria o HWND (para receber o "abrir" de uma segunda instância)
+            // sem mostrar a janela
+            _ = new System.Windows.Interop.WindowInteropHelper(MainWindow).EnsureHandle();
+        }
+        else
+        {
+            MainWindow.Show();
+        }
 
         // dispara os gatilhos "Ao iniciar o Windows" uma vez por sessão
         if (AppState.Settings.NotifyAtStartup)

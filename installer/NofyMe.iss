@@ -2,7 +2,7 @@
 ; Instala por usuário, sem exigir administrador. Mantém os dados em %APPDATA%\NofyMe.
 
 #define AppName "NofyMe"
-#define AppVersion "1.1.2"
+#define AppVersion "1.1.3"
 #define AppExe "NofyMe.exe"
 
 [Setup]
@@ -46,3 +46,26 @@ Filename: "{app}\{#AppExe}"; Description: "Abrir o {#AppName}"; Flags: nowait po
 
 [UninstallDelete]
 ; nada de %APPDATA%\NofyMe: os lembretes do usuário ficam preservados
+
+[Code]
+// Entradas de autostart antigas apontavam só para o .exe. Na atualização,
+// acrescenta --startup para o app abrir em segundo plano, sem mostrar a janela.
+procedure MigrateStartupEntry();
+var
+  Value: String;
+begin
+  if RegQueryStringValue(HKCU,
+    'Software\Microsoft\Windows\CurrentVersion\Run', 'NofyMe', Value) then
+  begin
+    if Pos('--startup', Value) = 0 then
+      RegWriteStringValue(HKCU,
+        'Software\Microsoft\Windows\CurrentVersion\Run', 'NofyMe',
+        '"' + ExpandConstant('{app}\NofyMe.exe') + '" --startup');
+  end;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep = ssPostInstall then
+    MigrateStartupEntry();
+end;
