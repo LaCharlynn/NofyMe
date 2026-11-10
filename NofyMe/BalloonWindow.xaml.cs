@@ -25,11 +25,13 @@ public partial class BalloonWindow : Window
 
     private static BalloonWindow? _current;
 
+    private readonly NotificationItem _item;
     private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromMilliseconds(LifetimeMs) };
 
     public BalloonWindow(NotificationItem item)
     {
         InitializeComponent();
+        _item = item;
 
         // o design mostra só a mensagem; sem mensagem, usa o título
         TxtBody.Text = string.IsNullOrWhiteSpace(item.Message) ? item.Title : item.Message;
@@ -60,7 +62,7 @@ public partial class BalloonWindow : Window
     private void Position()
     {
         var area = SystemParameters.WorkArea;
-        var position = ScreenCorners.Normalize(AppState.Settings.BalloonPosition);
+        var position = ScreenCorners.Normalize(_item.DisplayCorner);
         var onRight = position.EndsWith("direito");
         var onBottom = position.StartsWith("Inferior");
 

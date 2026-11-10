@@ -28,7 +28,8 @@ public partial class PopupWindow : Window
         _item = item;
         DataContext = item;
 
-        _lifetimeMs = Math.Clamp(AppState.Settings.PopupSeconds, 1, 60) * 1000;
+        var seconds = _item.DisplaySeconds ?? AppState.Settings.PopupSeconds;
+        _lifetimeMs = Math.Clamp(seconds, 1, 60) * 1000;
         _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(_lifetimeMs) };
         _timer.Tick += (_, _) => CloseInternal();
 
@@ -39,7 +40,7 @@ public partial class PopupWindow : Window
 
             // entra deslizando do canto escolhido
             // (RenderTransform não é válido em Window; anima o conteúdo)
-            var onRight = ScreenCorners.Normalize(AppState.Settings.PopupPosition).EndsWith("direito");
+            var onRight = Corner.EndsWith("direito");
             var offset = onRight ? Width + 48 : -(Width + 48);
             var slide = new DoubleAnimation(0, TimeSpan.FromMilliseconds(280))
             {
@@ -75,10 +76,13 @@ public partial class PopupWindow : Window
         foreach (var w in Open.ToList()) w.Position();
     }
 
+    /// <summary>Canto deste lembrete; sem escolha própria, o inferior esquerdo.</summary>
+    private string Corner => ScreenCorners.Normalize(_item.DisplayCorner);
+
     private void Position()
     {
         var area = SystemParameters.WorkArea;
-        var position = ScreenCorners.Normalize(AppState.Settings.PopupPosition);
+        var position = Corner;
         var onRight = position.EndsWith("direito");
         var slot = Math.Max(0, Open.IndexOf(this));
 

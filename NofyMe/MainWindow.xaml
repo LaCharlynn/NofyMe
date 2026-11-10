@@ -4,12 +4,29 @@
         Title="NofyMe"
         Icon="pack://application:,,,/Assets/notifica.ico"
         Width="960" Height="600"
+        MinWidth="840" MinHeight="560"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" AllowsTransparency="True"
-        ResizeMode="CanMinimize"
+        ResizeMode="NoResize"
         Background="Transparent">
 
-    <Border CornerRadius="18"
+    <Window.Resources>
+        <!-- Alças invisíveis. O Thumb padrão do Windows desenha um retângulo
+             branco atrás do conteúdo; o template vazio mantém só a área de clique. -->
+        <Style x:Key="GripThumb" TargetType="Thumb">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Border Background="Transparent"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid x:Name="Shell">
+        <Border CornerRadius="18"
             Background="{DynamicResource Panel}"
             BorderBrush="{DynamicResource Border}" BorderThickness="1"
             SnapsToDevicePixels="True">
@@ -169,4 +186,33 @@
             </Border>
         </Grid>
     </Border>
+
+    <!-- Alças de redimensionamento: a janela não tem moldura do sistema,
+         então as bordas são arrastáveis por estes Thumbs invisíveis. -->
+    <Thumb x:Name="GripLeft" Tag="L" Width="6" HorizontalAlignment="Left"
+           VerticalAlignment="Stretch" Margin="0,16,0,16"
+           Style="{StaticResource GripThumb}" Cursor="SizeWE" DragDelta="Grip_DragDelta"/>
+    <Thumb x:Name="GripRight" Tag="R" Width="6" HorizontalAlignment="Right"
+           VerticalAlignment="Stretch" Margin="0,16,0,16"
+           Style="{StaticResource GripThumb}" Cursor="SizeWE" DragDelta="Grip_DragDelta"/>
+    <Thumb x:Name="GripTop" Tag="T" Height="6" VerticalAlignment="Top"
+           HorizontalAlignment="Stretch" Margin="16,0,16,0"
+           Style="{StaticResource GripThumb}" Cursor="SizeNS" DragDelta="Grip_DragDelta"/>
+    <Thumb x:Name="GripBottom" Tag="B" Height="6" VerticalAlignment="Bottom"
+           HorizontalAlignment="Stretch" Margin="16,0,16,0"
+           Style="{StaticResource GripThumb}" Cursor="SizeNS" DragDelta="Grip_DragDelta"/>
+
+    <Thumb x:Name="GripTopLeft" Tag="TL" Width="16" Height="16"
+           HorizontalAlignment="Left" VerticalAlignment="Top"
+           Style="{StaticResource GripThumb}" Cursor="SizeNWSE" DragDelta="Grip_DragDelta"/>
+    <Thumb x:Name="GripTopRight" Tag="TR" Width="16" Height="16"
+           HorizontalAlignment="Right" VerticalAlignment="Top"
+           Style="{StaticResource GripThumb}" Cursor="SizeNESW" DragDelta="Grip_DragDelta"/>
+    <Thumb x:Name="GripBottomLeft" Tag="BL" Width="16" Height="16"
+           HorizontalAlignment="Left" VerticalAlignment="Bottom"
+           Style="{StaticResource GripThumb}" Cursor="SizeNESW" DragDelta="Grip_DragDelta"/>
+    <Thumb x:Name="GripBottomRight" Tag="BR" Width="16" Height="16"
+           HorizontalAlignment="Right" VerticalAlignment="Bottom"
+           Style="{StaticResource GripThumb}" Cursor="SizeNWSE" DragDelta="Grip_DragDelta"/>
+</Grid>
 </Window>

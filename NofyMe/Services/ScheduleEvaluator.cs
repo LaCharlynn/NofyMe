@@ -1,3 +1,5 @@
+using NofyMe.Models;
+
 namespace NofyMe.Services;
 
 /// <summary>
@@ -37,11 +39,12 @@ public static class ScheduleEvaluator
     /// <summary>Etiqueta do gatilho (chip do card): "Ao iniciar o Windows", "A cada 45 min", "Seg–Sex, 09:00"...</summary>
     public static string BuildChip(
         bool onStartup, bool afterTime, bool atTime,
-        int intervalSeconds, string timeOfDay, IReadOnlyList<int> days)
+        int intervalSeconds, string timeOfDay, IReadOnlyList<int> days,
+        IntervalUnit unit = IntervalUnit.Minutes)
     {
         var parts = new List<string>();
         if (onStartup) parts.Add("Ao iniciar o Windows");
-        if (afterTime) parts.Add($"A cada {DescribeInterval(intervalSeconds)}");
+        if (afterTime) parts.Add($"A cada {DescribeInterval(intervalSeconds, unit)}");
         if (atTime)
         {
             var label = DescribeDays(days);
@@ -50,10 +53,11 @@ public static class ScheduleEvaluator
         return string.Join(" · ", parts);
     }
 
-    /// <summary>"45 min" para múltiplos de 60 s; senão "30 s".</summary>
-    public static string DescribeInterval(int seconds)
+    /// <summary>"45 min" para minutos; "90 s" quando o usuário escolheu segundos.</summary>
+    public static string DescribeInterval(int seconds, IntervalUnit unit = IntervalUnit.Minutes)
     {
         var s = Math.Clamp(seconds, 1, 86400);
+        if (unit == IntervalUnit.Seconds) return $"{s} s";
         return s % 60 == 0 ? $"{s / 60} min" : $"{s} s";
     }
 

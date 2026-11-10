@@ -13,7 +13,7 @@ public class ChipTextConverter : IValueConverter
         if (value is not NotificationItem item) return "";
         return ScheduleEvaluator.BuildChip(
             item.TriggerOnStartup, item.TriggerAfterTime, item.TriggerAtTime,
-            item.IntervalSeconds, item.TimeOfDay, item.Days);
+            item.IntervalSeconds, item.TimeOfDay, item.Days, item.IntervalUnit);
     }
 
     public object ConvertBack(object v, Type t, object p, CultureInfo c) =>

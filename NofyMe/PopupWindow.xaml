@@ -40,7 +40,7 @@
                         VerticalAlignment="Top">
                     <Path Data="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9 M10.3 21a1.9 1.9 0 0 0 3.4 0"
                           Width="20" Height="20" Stretch="Uniform"
-                          Stroke="{DynamicResource Accent}" StrokeThickness="2" Fill="Transparent"
+                          Stroke="{DynamicResource AccentSoft}" StrokeThickness="2" Fill="Transparent"
                           StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
                 </Border>
 

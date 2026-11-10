@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Nova notificação"
         Icon="pack://application:,,,/Assets/notifica.ico"
-        Width="560" Height="640"
+        Width="560" Height="780"
         WindowStartupLocation="CenterOwner"
         WindowStyle="None" AllowsTransparency="True"
         ResizeMode="NoResize"
@@ -39,12 +39,82 @@
                 <TextBlock Text="Exibir como" Style="{StaticResource Caption}" FontSize="13" Margin="0,16,0,0"/>
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                     <RadioButton x:Name="RbPopup" GroupName="Mode" Style="{StaticResource ModeCard}" Content="Pop-up"
-                                 Width="150" HorizontalContentAlignment="Left" IsChecked="True"/>
+                                 Width="150" HorizontalContentAlignment="Left" IsChecked="True" Checked="Mode_Checked"/>
                     <RadioButton x:Name="RbNative" GroupName="Mode" Style="{StaticResource ModeCard}" Content="Nativa"
-                                 Width="150" HorizontalContentAlignment="Left" Margin="10,0,0,0"/>
+                                 Width="150" HorizontalContentAlignment="Left" Margin="10,0,0,0" Checked="Mode_Checked"/>
                     <RadioButton x:Name="RbBalloon" GroupName="Mode" Style="{StaticResource ModeCard}" Content="Balão"
-                                 Width="150" HorizontalContentAlignment="Left" Margin="10,0,0,0"/>
+                                 Width="150" HorizontalContentAlignment="Left" Margin="10,0,0,0" Checked="Mode_Checked"/>
                 </StackPanel>
+
+                <TextBlock Text="Na tela" Style="{StaticResource Caption}" FontSize="13" Margin="0,16,0,0"/>
+                <Border x:Name="DisplayCard" Style="{StaticResource Card}" Margin="0,4,0,4" Padding="14,10">
+                    <StackPanel>
+                        <Grid x:Name="TempoRow">
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Tempo do pop-up"
+                                           Foreground="{DynamicResource Text}" FontFamily="Segoe UI" FontSize="13"/>
+                                <TextBlock x:Name="TempoHint" Text="Em branco usa o padrão (6 s)."
+                                           Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
+                                           FontSize="12" Margin="0,1,0,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                                        VerticalAlignment="Center">
+                                <Border Background="{DynamicResource InputBg}" CornerRadius="8"
+                                        BorderBrush="{DynamicResource Border}" BorderThickness="1"
+                                        Width="56">
+                                    <Grid>
+                                        <TextBlock x:Name="TxtDisplayPlaceholder" Text="6"
+                                                   Foreground="{DynamicResource Faint}"
+                                                   FontFamily="Segoe UI" FontSize="14"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                   IsHitTestVisible="False"/>
+                                        <TextBox x:Name="TxtDisplaySeconds" Background="Transparent"
+                                                 BorderThickness="0"
+                                                 Foreground="{DynamicResource Text}"
+                                                 CaretBrush="{DynamicResource Accent}"
+                                                 FontFamily="Segoe UI" FontSize="14" Padding="8,6"
+                                                 TextAlignment="Center" MaxLength="2"
+                                                 VerticalAlignment="Center"
+                                                 AutomationProperties.Name="Segundos que este lembrete fica na tela"
+                                                 TextChanged="DisplaySeconds_TextChanged"
+                                                 PreviewTextInput="TimePart_PreviewTextInput"/>
+                                    </Grid>
+                                </Border>
+                                <TextBlock Text="s" Foreground="{DynamicResource Faint}"
+                                           FontFamily="Segoe UI" FontSize="14"
+                                           VerticalAlignment="Center" Margin="8,0,0,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid x:Name="CornerRow" Margin="0,10,0,0">
+                            <TextBlock Text="Canto na tela" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Text}" FontFamily="Segoe UI" FontSize="13"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <RadioButton x:Name="CornerSupEsq" GroupName="ItemCorner"
+                                             Style="{StaticResource DayChip}" Content="↖" Width="36"
+                                             Height="32" Tag="Superior esquerdo"
+                                             ToolTip="Superior esquerdo"
+                                             AutomationProperties.Name="Este lembrete no canto superior esquerdo"/>
+                                <RadioButton x:Name="CornerSupDir" GroupName="ItemCorner"
+                                             Style="{StaticResource DayChip}" Content="↗" Width="36"
+                                             Height="32" Margin="6,0,0,0" Tag="Superior direito"
+                                             ToolTip="Superior direito"
+                                             AutomationProperties.Name="Este lembrete no canto superior direito"/>
+                                <RadioButton x:Name="CornerInfEsq" GroupName="ItemCorner"
+                                             Style="{StaticResource DayChip}" Content="↙" Width="36"
+                                             Height="32" Margin="6,0,0,0" Tag="Inferior esquerdo"
+                                             IsChecked="True"
+                                             ToolTip="Inferior esquerdo"
+                                             AutomationProperties.Name="Este lembrete no canto inferior esquerdo"/>
+                                <RadioButton x:Name="CornerInfDir" GroupName="ItemCorner"
+                                             Style="{StaticResource DayChip}" Content="↘" Width="36"
+                                             Height="32" Margin="6,0,0,0" Tag="Inferior direito"
+                                             ToolTip="Inferior direito"
+                                             AutomationProperties.Name="Este lembrete no canto inferior direito"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
 
                 <TextBlock Text="Disparar quando" Style="{StaticResource Caption}" FontSize="13" Margin="0,16,0,0"/>
 

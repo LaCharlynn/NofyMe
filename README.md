@@ -6,11 +6,13 @@ Lembretes discretos que aparecem na hora certa — sem manual.
 
 ## O que faz
 
-- **Pop-up na tela**: cartão com barra de tempo, “Adiar 10 min” e “Dispensar”. Fecha sozinho no tempo definido em **Configurações → Tempo na tela** (1 a 60 s; padrão 6 s). O canto de entrada é escolhido em **Posição do pop-up**.
+- **Pop-up na tela**: cartão com barra de tempo, “Adiar 10 min” e “Dispensar”. Fecha sozinho no tempo do próprio lembrete (1 a 60 s) ou, se ele não definir, no padrão de **Configurações → Tempo na tela** (padrão 6 s).
 - **Nativa do Windows**: toast do sistema.
-- **Balão compacto**: uma única bolha na cor do tema, só com a mensagem. Os cantos são arredondados e o canto de origem salta para fora, apontando para o canto da tela. Sem roubar o foco e sem título. O canto (superior/inferior, esquerdo/direito) é escolhido em **Configurações → Posição do balão**.
-- **Quando disparar**: ao iniciar o Windows, a cada X minutos/segundos **ou** em um horário fixo (um ou outro).
+- **Balão compacto**: uma única bolha na cor do tema, só com a mensagem. Os cantos são arredondados e o canto de origem salta para fora, apontando para o canto da tela. Sem roubar o foco e sem título. O canto é escolhido em cada lembrete (padrão: inferior esquerdo).
+- **Por lembrete**: cada notificação define o próprio tempo na tela e o canto (sem escolha, usa inferior esquerdo).
+- **Quando disparar**: ao iniciar o Windows, a cada X minutos/segundos **ou** em um horário fixo (um ou outro). O chip mostra a unidade escolhida — 90 s não vira “1 min”.
 - **Temas**: Entardecer, Café, Floresta e Pêssego.
+- **Janela redimensionável**: arraste as bordas ou os cantos.
 - **Bandeja**: fechar a janela mantém o NofyMe ativo. Clique duplo no ícone para abrir.
 
 ## Requisitos
@@ -22,8 +24,8 @@ Lembretes discretos que aparecem na hora certa — sem manual.
 
 | Arquivo | Como usar |
 | --- | --- |
-| `NofyMe-Setup-1.0.0.exe` | Instala por usuário (sem administrador), cria atalhos e abre o app. |
-| `NofyMe-1.0.0-portatil.zip` | Extraia e execute `NofyMe.exe`. Não precisa instalar. |
+| `NofyMe-Setup-1.1.0.exe` | Instala por usuário (sem administrador), cria atalhos e abre o app. |
+| `NofyMe-1.1.0-portatil.zip` | Extraia e execute `NofyMe.exe`. Não precisa instalar. |
 
 Os dois ficam em [Releases](https://github.com/LaCharlynn/NofyMe/releases) e também em `dist` depois de gerados.
 
@@ -42,7 +44,7 @@ Ficam em `%APPDATA%\NofyMe`:
 | Arquivo | Conteúdo |
 | --- | --- |
 | `notifications.json` | notificações criadas |
-| `settings.json` | tema, opções, posições e tempo do pop-up |
+| `settings.json` | tema, opções e tempo padrão do pop-up (cada lembrete pode sobrepor) |
 | `history.json` | últimas 200 exibições |
 
 Gravação atômica e UTF-8 sem BOM. Arquivo corrompido não derruba o app.

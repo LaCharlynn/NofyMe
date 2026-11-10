@@ -32,6 +32,9 @@ public class StoreTests : IDisposable
                 Mode = DisplayMode.Popup,
                 TriggerAfterTime = true,
                 IntervalSeconds = 2700,
+                IntervalUnit = IntervalUnit.Seconds,
+                DisplaySeconds = 9,
+                DisplayCorner = ScreenCorners.TopLeft,
             },
             new()
             {
@@ -59,6 +62,9 @@ public class StoreTests : IDisposable
         Assert.Equal("Beber água", loaded[0].Title);
         Assert.Equal(DisplayMode.Popup, loaded[0].Mode);
         Assert.Equal(2700, loaded[0].IntervalSeconds);
+        Assert.Equal(IntervalUnit.Seconds, loaded[0].IntervalUnit);
+        Assert.Equal(9, loaded[0].DisplaySeconds);
+        Assert.Equal(ScreenCorners.TopLeft, loaded[0].DisplayCorner);
         Assert.Equal(DisplayMode.Native, loaded[1].Mode);
         Assert.Equal("09:00", loaded[1].TimeOfDay);
         Assert.Equal([1, 2, 3, 4, 5], loaded[1].Days);
@@ -75,8 +81,6 @@ public class StoreTests : IDisposable
             ThemeName = "Floresta",
             StartWithWindows = true,
             NotifyAtStartup = false,
-            BalloonPosition = ScreenCorners.TopLeft,
-            PopupPosition = ScreenCorners.TopRight,
             PopupSeconds = 12,
         };
 
@@ -86,16 +90,14 @@ public class StoreTests : IDisposable
         Assert.Equal("Floresta", loaded.ThemeName);
         Assert.True(loaded.StartWithWindows);
         Assert.False(loaded.NotifyAtStartup);
-        Assert.Equal(ScreenCorners.TopLeft, loaded.BalloonPosition);
-        Assert.Equal(ScreenCorners.TopRight, loaded.PopupPosition);
         Assert.Equal(12, loaded.PopupSeconds);
     }
 
     [Fact]
-    public void Balao_cai_no_canto_inferior_direito_quando_posicao_e_invalida()
+    public void Canto_cai_no_inferior_esquerdo_quando_posicao_e_invalida()
     {
-        Assert.Equal(ScreenCorners.BottomRight, ScreenCorners.Normalize(null));
-        Assert.Equal(ScreenCorners.BottomRight, ScreenCorners.Normalize("Centro"));
+        Assert.Equal(ScreenCorners.BottomLeft, ScreenCorners.Normalize(null));
+        Assert.Equal(ScreenCorners.BottomLeft, ScreenCorners.Normalize("Centro"));
         Assert.Equal(ScreenCorners.TopRight, ScreenCorners.Normalize(ScreenCorners.TopRight));
     }
 
@@ -128,6 +130,17 @@ public class StoreTests : IDisposable
         var texto = System.Text.Encoding.UTF8.GetString(bytes);
         Assert.Contains("Coração ção", texto);
         Assert.Equal("Coração ção", Store.LoadNotifications()[0].Title);
+    }
+
+    [Fact]
+    public void Lembrete_sem_ajustes_proprios_deixa_o_padrao_valer()
+    {
+        Store.SaveNotifications([new NotificationItem { Title = "Sem ajustes" }]);
+
+        var loaded = Store.LoadNotifications()[0];
+
+        Assert.Null(loaded.DisplaySeconds);
+        Assert.Null(loaded.DisplayCorner);
     }
 
     [Fact]

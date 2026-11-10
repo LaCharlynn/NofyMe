@@ -7,12 +7,6 @@ public class AppSettings
     /// <summary>Configuração "Notificar ao ligar": permite que gatilhos "Ao iniciar o Windows" disparem.</summary>
     public bool NotifyAtStartup { get; set; } = true;
 
-    /// <summary>Canto da tela em que o balão compacto aparece.</summary>
-    public string BalloonPosition { get; set; } = ScreenCorners.BottomRight;
-
-    /// <summary>Canto de onde o pop-up entra na tela.</summary>
-    public string PopupPosition { get; set; } = ScreenCorners.BottomRight;
-
     /// <summary>Segundos que o pop-up fica visível (1 a 60).</summary>
     public int PopupSeconds { get; set; } = 6;
 }
@@ -28,5 +22,5 @@ public static class ScreenCorners
     public static readonly string[] All = [TopLeft, TopRight, BottomLeft, BottomRight];
 
     public static string Normalize(string? value) =>
-        value != null && All.Contains(value) ? value : BottomRight;
+        value != null && All.Contains(value) ? value : BottomLeft;
 }

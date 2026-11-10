@@ -29,7 +29,7 @@ public static class ThemeManager
                 onAccent: "#12201A", inputBorder: "#3D4F45"),
             "Pêssego" => (
                 bg: "#FBF1E7", panel: "#FFF9F3", border: "#EAD9C7", text: "#3A2B25",
-                sub: "#7A655B", faint: "#A69286", accent: "#C85A41", accentSoft: "#C85A41",
+                sub: "#7A655B", faint: "#A69286", accent: "#B4472F", accentSoft: "#C85A41",
                 active: "#F6E2D8", input: "#F6EEE3", offTrack: "#8A92A0", chipBg: "#F3E6D9",
                 onAccent: "#FFFFFF", inputBorder: "#DEC6B0"),
             _ => ( // Entardecer

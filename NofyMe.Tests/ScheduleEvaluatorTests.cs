@@ -1,9 +1,26 @@
+using NofyMe.Models;
 using NofyMe.Services;
 
 namespace NofyMe.Tests;
 
 public class ScheduleEvaluatorTests
 {
+    [Fact]
+    public void Chip_respeita_a_unidade_escolhida()
+    {
+        Assert.Equal("A cada 120 s",
+            ScheduleEvaluator.BuildChip(false, true, false, 120, "09:00", [], IntervalUnit.Seconds));
+        Assert.Equal("A cada 2 min",
+            ScheduleEvaluator.BuildChip(false, true, false, 120, "09:00", [], IntervalUnit.Minutes));
+    }
+
+    [Fact]
+    public void Chip_mostra_segundos_quando_nao_fecha_minuto()
+    {
+        Assert.Equal("A cada 90 s",
+            ScheduleEvaluator.BuildChip(false, true, false, 90, "09:00", [], IntervalUnit.Minutes));
+    }
+
     [Theory]
     [InlineData("09:00", 9, 0, true)]
     [InlineData("09:00", 8, 59, false)] // ainda não chegou

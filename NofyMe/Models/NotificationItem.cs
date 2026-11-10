@@ -18,6 +18,13 @@ public enum TriggerType
     AtTime,
 }
 
+/// <summary>Unidade escolhida para o gatilho "a cada X" — só afeta como o valor é exibido.</summary>
+public enum IntervalUnit
+{
+    Minutes,
+    Seconds,
+}
+
 /// <summary>
 /// Uma notificação criada pelo usuário. Um item pode ter 1..3 gatilhos:
 /// ao iniciar o Windows, a cada X minutos/segundos, ou em horário fixo (por dia da semana).
@@ -31,6 +38,9 @@ public class NotificationItem : INotifyPropertyChanged
     private bool _triggerAfterTime;
     private bool _triggerAtTime;
     private int _intervalSeconds = 2700;
+    private IntervalUnit _intervalUnit = IntervalUnit.Minutes;
+    private int? _displaySeconds;
+    private string? _displayCorner;
     private string _timeOfDay = "09:00";
     private List<int> _days = [];
     private bool _enabled = true;
@@ -79,6 +89,35 @@ public class NotificationItem : INotifyPropertyChanged
     {
         get => _intervalSeconds;
         set => Set(ref _intervalSeconds, value);
+    }
+
+    /// <summary>
+    /// Unidade em que o intervalo foi digitado. Mantém o chip fiel ao que o
+    /// usuário escolheu: 120 s em "seg" aparece "120 s", não "2 min".
+    /// </summary>
+    public IntervalUnit IntervalUnit
+    {
+        get => _intervalUnit;
+        set => Set(ref _intervalUnit, value);
+    }
+
+    /// <summary>
+    /// Segundos que este lembrete fica na tela. Vazio = usa o padrão de Configurações.
+    /// </summary>
+    public int? DisplaySeconds
+    {
+        get => _displaySeconds;
+        set => Set(ref _displaySeconds, value);
+    }
+
+    /// <summary>
+    /// Canto da tela só deste lembrete ("Superior esquerdo" etc.).
+    /// Vazio = canto inferior esquerdo.
+    /// </summary>
+    public string? DisplayCorner
+    {
+        get => _displayCorner;
+        set => Set(ref _displayCorner, value);
     }
 
     /// <summary>

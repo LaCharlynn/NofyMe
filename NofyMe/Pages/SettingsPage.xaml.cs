@@ -28,8 +28,6 @@ public partial class SettingsPage : UserControl
         _tempoAtualizando = false;
         TempoErro.Visibility = Visibility.Collapsed;
 
-        MarkPopupCorner(AppState.Settings.PopupPosition);
-        MarkBalloonCorner(AppState.Settings.BalloonPosition);
         RefreshTheme();
     }
 
@@ -85,46 +83,6 @@ public partial class SettingsPage : UserControl
 
         Keyboard.ClearFocus();
         e.Handled = true;
-    }
-
-    private void MarkPopupCorner(string position)
-    {
-        var normalized = ScreenCorners.Normalize(position);
-        PopSupEsq.IsChecked = normalized == ScreenCorners.TopLeft;
-        PopSupDir.IsChecked = normalized == ScreenCorners.TopRight;
-        PopInfEsq.IsChecked = normalized == ScreenCorners.BottomLeft;
-        PopInfDir.IsChecked = normalized == ScreenCorners.BottomRight;
-    }
-
-    private void PopupCorner_Checked(object sender, RoutedEventArgs e)
-    {
-        if (sender is not RadioButton { Tag: string position }) return;
-
-        var normalized = ScreenCorners.Normalize(position);
-        if (AppState.Settings.PopupPosition == normalized) return;
-
-        AppState.Settings.PopupPosition = normalized;
-        AppState.SaveSettings();
-    }
-
-    private void MarkBalloonCorner(string position)
-    {
-        var normalized = ScreenCorners.Normalize(position);
-        PosSupEsq.IsChecked = normalized == ScreenCorners.TopLeft;
-        PosSupDir.IsChecked = normalized == ScreenCorners.TopRight;
-        PosInfEsq.IsChecked = normalized == ScreenCorners.BottomLeft;
-        PosInfDir.IsChecked = normalized == ScreenCorners.BottomRight;
-    }
-
-    private void BalloonCorner_Checked(object sender, RoutedEventArgs e)
-    {
-        if (sender is not RadioButton { Tag: string position }) return;
-
-        var normalized = ScreenCorners.Normalize(position);
-        if (AppState.Settings.BalloonPosition == normalized) return;
-
-        AppState.Settings.BalloonPosition = normalized;
-        AppState.SaveSettings();
     }
 
     private void RefreshTheme()

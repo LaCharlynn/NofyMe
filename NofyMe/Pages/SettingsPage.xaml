@@ -48,7 +48,7 @@
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel MaxWidth="760" HorizontalAlignment="Left">
+        <StackPanel HorizontalAlignment="Stretch" MaxWidth="1040" Margin="0,0,2,0">
 
             <TextBlock Text="Opções" Foreground="{DynamicResource Text}"
                        FontFamily="Segoe UI" FontSize="20" FontWeight="SemiBold"
@@ -89,63 +89,10 @@
             <Border Style="{StaticResource Card}" Margin="0,4,0,8">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="Posição do pop-up"
-                                   Foreground="{DynamicResource Text}" FontFamily="Segoe UI"
-                                   FontSize="14" FontWeight="SemiBold"/>
-                        <TextBlock Text="Canto de onde o pop-up entra na tela."
-                                   Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
-                                   FontSize="12" Margin="0,2,0,0"/>
-                    </StackPanel>
-
-                    <Grid HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <RadioButton x:Name="PopSupEsq" Grid.Row="0" Grid.Column="0"
-                                     Style="{StaticResource DayChip}" GroupName="CantoPopup"
-                                     Content="↖" Width="40" Height="32" Margin="0,0,4,4"
-                                     Tag="Superior esquerdo"
-                                     ToolTip="Superior esquerdo"
-                                     AutomationProperties.Name="Pop-up no canto superior esquerdo"
-                                     Checked="PopupCorner_Checked"/>
-                        <RadioButton x:Name="PopSupDir" Grid.Row="0" Grid.Column="1"
-                                     Style="{StaticResource DayChip}" GroupName="CantoPopup"
-                                     Content="↗" Width="40" Height="32" Margin="0,0,0,4"
-                                     Tag="Superior direito"
-                                     ToolTip="Superior direito"
-                                     AutomationProperties.Name="Pop-up no canto superior direito"
-                                     Checked="PopupCorner_Checked"/>
-                        <RadioButton x:Name="PopInfEsq" Grid.Row="1" Grid.Column="0"
-                                     Style="{StaticResource DayChip}" GroupName="CantoPopup"
-                                     Content="↙" Width="40" Height="32" Margin="0,0,4,0"
-                                     Tag="Inferior esquerdo"
-                                     ToolTip="Inferior esquerdo"
-                                     AutomationProperties.Name="Pop-up no canto inferior esquerdo"
-                                     Checked="PopupCorner_Checked"/>
-                        <RadioButton x:Name="PopInfDir" Grid.Row="1" Grid.Column="1"
-                                     Style="{StaticResource DayChip}" GroupName="CantoPopup"
-                                     Content="↘" Width="40" Height="32" Margin="0"
-                                     Tag="Inferior direito"
-                                     ToolTip="Inferior direito"
-                                     AutomationProperties.Name="Pop-up no canto inferior direito"
-                                     Checked="PopupCorner_Checked"/>
-                    </Grid>
-                </Grid>
-            </Border>
-
-            <Border Style="{StaticResource Card}" Margin="0,4,0,8">
-                <Grid>
-                    <StackPanel>
                         <TextBlock Text="Tempo na tela"
                                    Foreground="{DynamicResource Text}" FontFamily="Segoe UI"
                                    FontSize="14" FontWeight="SemiBold"/>
-                        <TextBlock Text="Quanto tempo o pop-up fica visível."
+                        <TextBlock Text="Padrão do pop-up. Cada lembrete pode ter o seu."
                                    Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
                                    FontSize="12" Margin="0,2,0,0"/>
                         <TextBlock x:Name="TempoErro" Text="" Visibility="Collapsed"
@@ -167,60 +114,6 @@
                                    FontFamily="Segoe UI" FontSize="14"
                                    VerticalAlignment="Center" Margin="8,0,0,0"/>
                     </StackPanel>
-                </Grid>
-            </Border>
-
-            <Border Style="{StaticResource Card}" Margin="0,4,0,8">
-                <Grid>
-                    <StackPanel>
-                        <TextBlock Text="Posição do balão"
-                                   Foreground="{DynamicResource Text}" FontFamily="Segoe UI"
-                                   FontSize="14" FontWeight="SemiBold"/>
-                        <TextBlock Text="Canto da tela em que o balão compacto aparece."
-                                   Foreground="{DynamicResource Faint}" FontFamily="Segoe UI"
-                                   FontSize="12" Margin="0,2,0,0"/>
-                    </StackPanel>
-
-                    <!-- miniatura da tela: cada botão é um canto -->
-                    <Grid HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <RadioButton x:Name="PosSupEsq" Grid.Row="0" Grid.Column="0"
-                                     Style="{StaticResource DayChip}" GroupName="CantoBalao"
-                                     Content="↖" Width="40" Height="32" Margin="0,0,4,4"
-                                     Tag="Superior esquerdo"
-                                     ToolTip="Superior esquerdo"
-                                     AutomationProperties.Name="Balão no canto superior esquerdo"
-                                     Checked="BalloonCorner_Checked"/>
-                        <RadioButton x:Name="PosSupDir" Grid.Row="0" Grid.Column="1"
-                                     Style="{StaticResource DayChip}" GroupName="CantoBalao"
-                                     Content="↗" Width="40" Height="32" Margin="0,0,0,4"
-                                     Tag="Superior direito"
-                                     ToolTip="Superior direito"
-                                     AutomationProperties.Name="Balão no canto superior direito"
-                                     Checked="BalloonCorner_Checked"/>
-                        <RadioButton x:Name="PosInfEsq" Grid.Row="1" Grid.Column="0"
-                                     Style="{StaticResource DayChip}" GroupName="CantoBalao"
-                                     Content="↙" Width="40" Height="32" Margin="0,0,4,0"
-                                     Tag="Inferior esquerdo"
-                                     ToolTip="Inferior esquerdo"
-                                     AutomationProperties.Name="Balão no canto inferior esquerdo"
-                                     Checked="BalloonCorner_Checked"/>
-                        <RadioButton x:Name="PosInfDir" Grid.Row="1" Grid.Column="1"
-                                     Style="{StaticResource DayChip}" GroupName="CantoBalao"
-                                     Content="↘" Width="40" Height="32" Margin="0"
-                                     Tag="Inferior direito"
-                                     ToolTip="Inferior direito"
-                                     AutomationProperties.Name="Balão no canto inferior direito"
-                                     Checked="BalloonCorner_Checked"/>
-                    </Grid>
                 </Grid>
             </Border>
 

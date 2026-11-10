@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -171,6 +172,29 @@ public partial class MainWindow : Window
 
     private void BtnMinimize_Click(object sender, RoutedEventArgs e) =>
         WindowState = WindowState.Minimized;
+
+    /// <summary>
+    /// Redimensiona pela alça arrastada ("L", "R", "T", "B", "TL", "TR", "BL", "BR").
+    /// A janela é transparente e sem moldura, então isso substitui a borda do Windows.
+    /// </summary>
+    private void Grip_DragDelta(object sender, DragDeltaEventArgs e)
+    {
+        if (sender is not Thumb { Tag: string direction }) return;
+
+        var area = SystemParameters.WorkArea;
+        var current = new WindowResizer.Bounds(Left, Top, Width, Height);
+        var next = WindowResizer.Apply(
+            current, direction, e.HorizontalChange, e.VerticalChange,
+            minWidth: MinWidth > 0 ? MinWidth : 840,
+            minHeight: MinHeight > 0 ? MinHeight : 560,
+            maxWidth: area.Width,
+            maxHeight: area.Height);
+
+        Left = next.Left;
+        Top = next.Top;
+        Width = next.Width;
+        Height = next.Height;
+    }
 
     // fechar = esconder para a bandeja (o app continua disparando)
     private void BtnClose_Click(object sender, RoutedEventArgs e) => Close();

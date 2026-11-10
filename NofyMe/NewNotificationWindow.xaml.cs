@@ -21,6 +21,7 @@ public partial class NewNotificationWindow : Window
         DataObject.AddPastingHandler(TxtTimeHour, OnTimePaste);
         DataObject.AddPastingHandler(TxtTimeMinute, OnTimePaste);
         DataObject.AddPastingHandler(TxtInterval, OnTimePaste);
+        DataObject.AddPastingHandler(TxtDisplaySeconds, OnTimePaste);
 
         Loaded += (_, _) =>
         {
@@ -33,6 +34,7 @@ public partial class NewNotificationWindow : Window
             }
             TxtTitle.Focus();
             _loading = false;
+            UpdateDisplayRows();
 
             // garante que o modal sobe para a frente (há apps que ficam sempre em primeiro plano)
             Activate();
@@ -63,16 +65,19 @@ public partial class NewNotificationWindow : Window
             ChkAtTime.IsChecked = item.TriggerAtTime;
 
             var seconds = Math.Clamp(item.IntervalSeconds, 1, 86400);
-            if (seconds % 60 == 0)
-            {
-                RbMin.IsChecked = true;
-                TxtInterval.Text = (seconds / 60).ToString();
-            }
-            else
-            {
-                RbSeg.IsChecked = true;
-                TxtInterval.Text = seconds.ToString();
-            }
+            var unit = item.IntervalUnit;
+            if (unit == IntervalUnit.Minutes && seconds % 60 != 0) unit = IntervalUnit.Seconds;
+
+            RbMin.IsChecked = unit == IntervalUnit.Minutes;
+            RbSeg.IsChecked = unit == IntervalUnit.Seconds;
+            TxtInterval.Text = unit == IntervalUnit.Minutes
+                ? (seconds / 60).ToString()
+                : seconds.ToString();
+
+            TxtDisplaySeconds.Text = item.DisplaySeconds?.ToString() ?? "";
+            TxtDisplayPlaceholder.Text = Math.Clamp(AppState.Settings.PopupSeconds, 1, 60).ToString();
+            TempoHint.Text = $"Em branco usa o padrão ({Math.Clamp(AppState.Settings.PopupSeconds, 1, 60)} s).";
+            MarkCorner(item.DisplayCorner);
 
             var parts = (item.TimeOfDay ?? "09:00").Split(':');
             TxtTimeHour.Text = parts.Length > 0 ? parts[0] : "09";
@@ -126,6 +131,52 @@ public partial class NewNotificationWindow : Window
         return DisplayMode.Balloon;
     }
 
+    /// <summary>"Na tela": pop-up mostra tempo e canto; balão só o canto; nativa, nada.</summary>
+    private void UpdateDisplayRows()
+    {
+        if (DisplayCard == null) return;
+
+        var mode = GetMode();
+        DisplayCard.Visibility = mode == DisplayMode.Native ? Visibility.Collapsed : Visibility.Visible;
+        TempoRow.Visibility = mode == DisplayMode.Popup ? Visibility.Visible : Visibility.Collapsed;
+        CornerRow.Margin = mode == DisplayMode.Popup ? new Thickness(0, 10, 0, 0) : new Thickness(0);
+    }
+
+    private void Mode_Checked(object sender, RoutedEventArgs e)
+    {
+        if (_loading) return;
+        UpdateDisplayRows();
+    }
+
+    private void MarkCorner(string? corner)
+    {
+        var normalized = ScreenCorners.Normalize(corner);
+        CornerSupEsq.IsChecked = normalized == ScreenCorners.TopLeft;
+        CornerSupDir.IsChecked = normalized == ScreenCorners.TopRight;
+        CornerInfEsq.IsChecked = normalized == ScreenCorners.BottomLeft;
+        CornerInfDir.IsChecked = normalized == ScreenCorners.BottomRight;
+    }
+
+    private string SelectedCorner()
+    {
+        if (CornerSupEsq.IsChecked == true) return ScreenCorners.TopLeft;
+        if (CornerSupDir.IsChecked == true) return ScreenCorners.TopRight;
+        if (CornerInfDir.IsChecked == true) return ScreenCorners.BottomRight;
+        return ScreenCorners.BottomLeft;
+    }
+
+    /// <summary>Tempo próprio do lembrete: vazio é válido (usa o padrão).</summary>
+    private bool TryReadDisplaySeconds(out int? seconds)    {
+        seconds = null;
+        var text = TxtDisplaySeconds.Text.Trim();
+        if (text.Length == 0) return true;
+
+        if (!int.TryParse(text, out var value) || value is < 1 or > 60) return false;
+
+        seconds = value;
+        return true;
+    }
+
     private bool TryReadInterval(out int seconds, out string error)
     {
         seconds = 0;
@@ -175,6 +226,9 @@ public partial class NewNotificationWindow : Window
         item.TriggerAfterTime = ChkAfterTime.IsChecked == true;
         item.TriggerAtTime = ChkAtTime.IsChecked == true;
         item.IntervalSeconds = seconds;
+        item.IntervalUnit = RbSeg.IsChecked == true ? IntervalUnit.Seconds : IntervalUnit.Minutes;
+        item.DisplaySeconds = TryReadDisplaySeconds(out var displaySeconds) ? displaySeconds : null;
+        item.DisplayCorner = SelectedCorner();
         item.TimeOfDay = time;
         item.Days = SelectedDays();
 
@@ -235,6 +289,14 @@ public partial class NewNotificationWindow : Window
             return;
         }
 
+        if (!TryReadDisplaySeconds(out _))
+        {
+            ShowError("Use um tempo de 1 a 60 s na tela.");
+            TxtDisplaySeconds.Focus();
+            TxtDisplaySeconds.SelectAll();
+            return;
+        }
+
         if (ChkOnStartup.IsChecked != true && ChkAfterTime.IsChecked != true && ChkAtTime.IsChecked != true)
         {
             ShowError("Marque quando a notificação deve aparecer.");
@@ -282,6 +344,13 @@ public partial class NewNotificationWindow : Window
 
         var text = (string)e.DataObject.GetData(typeof(string))!;
         if (!text.All(char.IsDigit)) e.CancelCommand();
+    }
+
+    private void DisplaySeconds_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (TxtDisplayPlaceholder == null) return;
+        TxtDisplayPlaceholder.Visibility =
+            TxtDisplaySeconds.Text.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void TimeHour_TextChanged(object sender, TextChangedEventArgs e)

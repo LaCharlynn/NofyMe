@@ -2,7 +2,7 @@
 ; Instala por usuário, sem exigir administrador. Mantém os dados em %APPDATA%\NofyMe.
 
 #define AppName "NofyMe"
-#define AppVersion "1.0.0"
+#define AppVersion "1.1.0"
 #define AppExe "NofyMe.exe"
 
 [Setup]
