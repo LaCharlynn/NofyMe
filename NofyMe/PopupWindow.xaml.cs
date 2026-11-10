@@ -101,12 +101,6 @@ public partial class PopupWindow : Window
         Close();
     }
 
-    private void Snooze_Click(object sender, RoutedEventArgs e)
-    {
-        Notifier.FireLater(_item, TimeSpan.FromMinutes(10));
-        CloseInternal();
-    }
-
     private void Dismiss_Click(object sender, RoutedEventArgs e)
     {
         CloseInternal();

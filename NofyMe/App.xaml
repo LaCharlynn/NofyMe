@@ -46,7 +46,7 @@
             </Setter>
         </Style>
 
-        <!-- Botão secundário (Adiar / Cancelar) -->
+        <!-- Botão secundário (Desfazer / Cancelar) -->
         <Style x:Key="PillGhost" TargetType="Button" BasedOn="{StaticResource PillPrimary}">
             <Setter Property="Background" Value="{DynamicResource ChipBg}"/>
             <Setter Property="Foreground" Value="{DynamicResource Text}"/>

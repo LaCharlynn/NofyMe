@@ -6,7 +6,7 @@ Lembretes discretos que aparecem na hora certa — sem manual.
 
 ## O que faz
 
-- **Pop-up na tela**: cartão com barra de tempo, “Adiar 10 min” e “Dispensar”. Fecha sozinho no tempo do próprio lembrete (1 a 60 s) ou, se ele não definir, no padrão de **Configurações → Tempo na tela** (padrão 6 s).
+- **Pop-up na tela**: cartão com barra de tempo e “Dispensar”. Fecha sozinho no tempo do próprio lembrete (1 a 60 s) ou, se ele não definir, no padrão de **Configurações → Tempo na tela** (padrão 6 s).
 - **Nativa do Windows**: toast do sistema.
 - **Balão compacto**: uma única bolha na cor do tema, só com a mensagem. Os cantos são arredondados e o canto de origem salta para fora, apontando para o canto da tela. Sem roubar o foco e sem título. O canto é escolhido em cada lembrete (padrão: inferior esquerdo).
 - **Por lembrete**: cada notificação define o próprio tempo na tela e o canto (sem escolha, usa inferior esquerdo).
@@ -24,8 +24,8 @@ Lembretes discretos que aparecem na hora certa — sem manual.
 
 | Arquivo | Como usar |
 | --- | --- |
-| `NofyMe-Setup-1.1.0.exe` | Instala por usuário (sem administrador), cria atalhos e abre o app. |
-| `NofyMe-1.1.0-portatil.zip` | Extraia e execute `NofyMe.exe`. Não precisa instalar. |
+| `NofyMe-Setup-1.1.1.exe` | Instala por usuário (sem administrador), cria atalhos e abre o app. |
+| `NofyMe-1.1.1-portatil.zip` | Extraia e execute `NofyMe.exe`. Não precisa instalar. |
 
 Os dois ficam em [Releases](https://github.com/LaCharlynn/NofyMe/releases) e também em `dist` depois de gerados.
 

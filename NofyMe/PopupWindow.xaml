@@ -60,12 +60,9 @@
 
             <StackPanel Grid.Row="1" Orientation="Horizontal"
                         HorizontalAlignment="Right" Margin="0,16,0,0">
-                <Button x:Name="BtnSnooze" Content="Adiar 10 min"
-                        Style="{StaticResource PillGhost}" Height="32" Padding="14,0"
-                        FontSize="13" Click="Snooze_Click"/>
                 <Button x:Name="BtnDismiss" Content="Dispensar"
                         Style="{StaticResource PillPrimary}" Height="32" Padding="14,0"
-                        FontSize="13" Margin="8,0,0,0"
+                        FontSize="13"
                         Click="Dismiss_Click"/>
             </StackPanel>
 

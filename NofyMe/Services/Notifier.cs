@@ -1,4 +1,3 @@
-using System.Windows.Threading;
 using NofyMe.Models;
 
 namespace NofyMe.Services;
@@ -37,18 +36,6 @@ public static class Notifier
                 BalloonWindow.ShowBalloon(item);
                 break;
         }
-    }
-
-    /// <summary>"Adiar 10 min" do pop-up: reagenda o disparo.</summary>
-    public static void FireLater(NotificationItem item, TimeSpan delay)
-    {
-        var t = new DispatcherTimer { Interval = delay };
-        t.Tick += (_, _) =>
-        {
-            t.Stop();
-            if (item.Enabled) Fire(item);
-        };
-        t.Start();
     }
 
     private static void RecordHistory(NotificationItem item)
