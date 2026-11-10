@@ -24,8 +24,8 @@ Lembretes discretos que aparecem na hora certa — sem manual.
 
 | Arquivo | Como usar |
 | --- | --- |
-| `NofyMe-Setup-1.1.1.exe` | Instala por usuário (sem administrador), cria atalhos e abre o app. |
-| `NofyMe-1.1.1-portatil.zip` | Extraia e execute `NofyMe.exe`. Não precisa instalar. |
+| `NofyMe-Setup-1.1.2.exe` | Instala por usuário (sem administrador), cria atalhos e abre o app. |
+| `NofyMe-1.1.2-portatil.zip` | Extraia e execute `NofyMe.exe`. Não precisa instalar. |
 
 Os dois ficam em [Releases](https://github.com/LaCharlynn/NofyMe/releases) e também em `dist` depois de gerados.
 

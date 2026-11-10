@@ -1,6 +1,6 @@
 # SPEC.md — NofyMe
 
-**Versão:** 1.1.1 · **Atualizado em:** 10/11/2026
+**Versão:** 1.1.2 · **Atualizado em:** 10/11/2026
 
 App desktop Windows para notificações personalizadas (pop-up na tela, notificações
 nativas do Windows e balão compacto), com gatilhos de tempo/horário e opção de
@@ -74,9 +74,9 @@ Na lista:
 
 - **clique no cartão** → abre o mesmo modal em modo edição;
 - **lixeira** → exclui com aviso "Notificação excluída." e botão **Desfazer**
-  por 6 s;
-- **interruptor** → liga/desliga; religar reconta o intervalo e, se desligado,
-  limpa o "já disparou hoje" do horário fixo.
+  por 6 s; o clique não abre a edição;
+- **interruptor** → liga/desliga sem abrir a edição; religar reconta o intervalo
+  e, se desligado, limpa o "já disparou hoje" do horário fixo.
 
 ### 1.3 Disparo (agendador)
 
@@ -195,14 +195,14 @@ Evidência: `dotnet test` → "Com falha: 0, Aprovado: 36, Total: 36".
   manualmente. Moldura branca eliminada (`window == client`, inset 0).
 - Temas: pop-up e balão renderizados nos 4 temas; cores resolvidas batem com a
   paleta (`popup_painel`, `balao_preenchimento`, `balao_texto`).
-- Pacotes 1.1.1 gerados:
-  - `dist\NofyMe-Setup-1.1.1.exe` — 53.073.449 bytes;
-  - `dist\NofyMe-1.1.1-portatil.zip` — 72.196.172 bytes.
-- Instalação silenciosa testada: 1.1.0 → 1.1.1, código de saída 0, app **não**
+- Pacotes 1.1.2 gerados:
+  - `dist\NofyMe-Setup-1.1.2.exe` — 53.060.931 bytes;
+  - `dist\NofyMe-1.1.2-portatil.zip` — 72.195.432 bytes.
+- Instalação silenciosa testada: 1.1.1 → 1.1.2, código de saída 0, app **não**
   abriu. Nenhum dado foi apagado pelo instalador: `notifications.json` seguiu
   vazio e o histórico foi preservado.
-- Publicação: tag `v1.1.1`, branch `main` sincronizada.
-  Release: https://github.com/LaCharlynn/NofyMe/releases/tag/v1.1.1
+- Publicação: tag `v1.1.2`, branch `main` sincronizada.
+  Release: https://github.com/LaCharlynn/NofyMe/releases/tag/v1.1.2
   (instalador e portátil anexados e verificados).
 
 ---

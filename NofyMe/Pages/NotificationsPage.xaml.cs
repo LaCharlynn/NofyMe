@@ -49,6 +49,12 @@ public partial class NotificationsPage : UserControl
         AppState.NotifyNotificationsChanged();
     }
 
+    private void Switch_Click(object sender, RoutedEventArgs e)
+    {
+        // o cartão inteiro é um botão de editar; o clique do interruptor não deve abrir o modal
+        e.Handled = true;
+    }
+
     private void Card_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not Button { DataContext: NotificationItem item }) return;
@@ -60,6 +66,9 @@ public partial class NotificationsPage : UserControl
 
     private void Delete_Click(object sender, RoutedEventArgs e)
     {
+        // mesma razão do interruptor: não deixar o clique chegar ao cartão
+        e.Handled = true;
+
         if (sender is not Button { DataContext: NotificationItem item }) return;
 
         var index = AppState.Notifications.IndexOf(item);
